@@ -31,12 +31,6 @@ Image Color Sampler is a graphical application that allows users to sample color
 2. **Run the application:**
    - Double-click the `setup_and_run.bat` file to set up the virtual environment and run the application. The command prompt will be minimized during execution.
 
-## File Structure
-
-- `setup_and_run.bat`: Main batch script for setting up the environment and running the application.
-- `avg_color_palette_sampler.py`: Main Python script for the Image Color Sampler application.
-- `miniconda3/`: Directory for the local Miniconda installation (automatically created).
-
 ## Usage Instructions
 
 1. **Upload an Image:**
