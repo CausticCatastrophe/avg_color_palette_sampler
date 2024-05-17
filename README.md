@@ -10,7 +10,7 @@ Image Color Sampler is a graphical application that allows users to sample color
 - Click and drag on the image to select a region for color sampling.
 - Calculate the median absolute deviation to filter outliers from the sampled colors.
 - Average the remaining colors after filtering outliers.
-- Display sampled colors (up to 4096 samples).
+- Display sampled colors (up to 1024 samples).
 - Calculate and display the average color of the sampled colors.
 - Zoom in and out using the mouse wheel.
 - Pan the image using the middle mouse button.
