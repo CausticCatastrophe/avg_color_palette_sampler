@@ -55,6 +55,10 @@ IF EXIST %VENV_DIR% (
 
     REM Create requirements.txt with necessary packages
     echo pillow > %REQUIREMENTS%
+    echo pandas >> %REQUIREMENTS%
+    echo numpy >> %REQUIREMENTS%
+    echo openpyxl >> %REQUIREMENTS%
+    echo tk >> %REQUIREMENTS%
 
     REM Install required packages
     echo Installing required packages...
