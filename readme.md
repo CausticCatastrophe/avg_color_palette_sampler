@@ -16,7 +16,6 @@ Image Color Sampler is a graphical application that allows users to sample color
 - Pan the image using the middle mouse button.
 - Clear all sampled colors.
 - Delete individual sampled colors.
-- Add the average color to a palette with a single click.
 - Copy colors from the palette to the clipboard.
 - Save the palette to a text file.
 - Save the palette as an image file.
