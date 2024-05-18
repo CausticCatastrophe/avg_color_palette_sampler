@@ -62,16 +62,19 @@ Image Color Sampler is a graphical application that allows users to sample color
 6. **View Average Color:**
    - The average color of the sampled colors is displayed at the top right.
 
-7. **Add to Palette:**
+7. **Quantize to STAC Chart colors:**
+   - Can optionally quantize to the STAC Chart colors found in lookup table.
+
+8. **Add to Palette:**
    - Click the "Add to Palette" button to add the average color to the palette. This will clear the current sampled colors.
 
-8. **Copy Color to Clipboard:**
+9. **Copy Color to Clipboard:**
    - Click on a color in the palette to copy its hexadecimal value to the clipboard.
 
-9. **Save Palette to Text File:**
+10. **Save Palette to Text File:**
    - Click the "Save Palette" button to save the palette to a text file. Each color will be saved in hexadecimal format, one per line.
 
-10. **Save Palette as Image:**
+11. **Save Palette as Image:**
     - Click the "Save Palette as Image" button to save the palette as a PNG image. Each color will be displayed as a wide rectangle bar with the hexadecimal value written next to it.
 
 ## Troubleshooting

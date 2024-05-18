@@ -3,7 +3,7 @@ SETLOCAL
 
 REM Set up variables
 SET VENV_DIR=venv
-SET REQUIREMENTS=requirements.txt
+SET REQUIREMENTS=%~dp0requirements.txt
 SET MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe
 SET MINICONDA_INSTALLER=Miniconda3-latest-Windows-x86_64.exe
 SET MINICONDA_DIR=%~dp0\miniconda3
@@ -53,34 +53,34 @@ IF EXIST %VENV_DIR% (
         EXIT /B 1
     )
 
-    REM Create requirements.txt with necessary packages
-    echo pillow > %REQUIREMENTS%
-    echo pandas >> %REQUIREMENTS%
-    echo numpy >> %REQUIREMENTS%
-    echo openpyxl >> %REQUIREMENTS%
-    echo tk >> %REQUIREMENTS%
-
     REM Install required packages
-    echo Installing required packages...
-    pip install -r %REQUIREMENTS%
-    IF ERRORLEVEL 1 (
-        echo Failed to install required packages.
+    IF EXIST %REQUIREMENTS% (
+        echo Installing required packages from %REQUIREMENTS%...
+        pip install -r %REQUIREMENTS% --log pip_install.log
+        IF ERRORLEVEL 1 (
+            echo Failed to install required packages. Check pip_install.log for details.
+            EXIT /B 1
+        )
+    ) ELSE (
+        echo %REQUIREMENTS% not found. Exiting...
         EXIT /B 1
     )
-
-    REM Remove requirements.txt file
-    DEL %REQUIREMENTS%
 )
 
 REM Run the Python script
 echo Running the application...
 start /min "" python %SCRIPT_DIR%\avg_color_palette_sampler.py
 
-REM Deactivate virtual environment
-CALL %MINICONDA_DIR%\Scripts\deactivate.bat
-IF ERRORLEVEL 1 (
-    echo Failed to deactivate the virtual environment.
-    EXIT /B 1
+REM Check if the deactivate.bat file exists before calling it
+IF EXIST %MINICONDA_DIR%\Scripts\deactivate.bat (
+    REM Deactivate virtual environment
+    CALL %MINICONDA_DIR%\Scripts\deactivate.bat
+    IF ERRORLEVEL 1 (
+        echo Failed to deactivate the virtual environment.
+        EXIT /B 1
+    )
+) ELSE (
+    echo deactivate.bat not found. Skipping deactivation...
 )
 
 ENDLOCAL

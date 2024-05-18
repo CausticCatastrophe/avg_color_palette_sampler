@@ -1,0 +1,5 @@
+pillow
+pandas
+numpy
+openpyxl
+tk
