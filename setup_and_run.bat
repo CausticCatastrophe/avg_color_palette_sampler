@@ -40,14 +40,14 @@ IF EXIST %VENV_DIR% (
 
     REM Create virtual environment
     echo Creating virtual environment...
-    conda create --yes --prefix %SCRIPT_DIR%\%VENV_DIR% python=3.12
+    conda create --yes --prefix "%SCRIPT_DIR%\%VENV_DIR%" python=3.12
     IF ERRORLEVEL 1 (
         echo Failed to create the virtual environment.
         EXIT /B 1
     )
 
     REM Activate virtual environment
-    CALL %MINICONDA_DIR%\Scripts\activate.bat %SCRIPT_DIR%\%VENV_DIR%
+    CALL %MINICONDA_DIR%\Scripts\activate.bat "%SCRIPT_DIR%\%VENV_DIR%"
     IF ERRORLEVEL 1 (
         echo Failed to activate the virtual environment.
         EXIT /B 1
