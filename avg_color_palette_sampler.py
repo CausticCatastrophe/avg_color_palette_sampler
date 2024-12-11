@@ -6,6 +6,7 @@ from PIL import Image, ImageTk, ImageDraw, ImageFont
 from collections import deque
 from math import sqrt
 import numpy as np
+from skimage.color import rgb2lab
 
 def load_stac_chart():
     """Load the STAC Chart from an Excel file."""
@@ -39,13 +40,43 @@ def average_colors(colors):
     return tuple(avg_color)
 
 def color_distance(c1, c2):
-    """Calculate the Euclidean distance between two colors."""
-    return sqrt(sum((a - b) ** 2 for a, b in zip(c1, c2)))
+    """Calculate perceptual color distance using Delta-E (CIE76)."""
+    try:
+        # Ensure input is standard Python int
+        c1 = tuple(map(int, c1))
+        c2 = tuple(map(int, c2))
+
+        # Normalize RGB to [0, 1] range
+        c1_norm = [x / 255.0 for x in c1]
+        c2_norm = [x / 255.0 for x in c2]
+
+        # Convert to Lab color space
+        c1_lab = rgb2lab(np.array(c1_norm).reshape(1, 1, 3)).flatten()
+        c2_lab = rgb2lab(np.array(c2_norm).reshape(1, 1, 3)).flatten()
+
+        # Calculate Euclidean distance in Lab space
+        distance = np.linalg.norm(c1_lab - c2_lab)
+        
+        return distance
+    except Exception as e:
+        print(f"Error in color_distance: {e}")
+        return float('inf')  # Return a very high distance on error
+
+
 
 def find_closest_color(rgb, stac_chart):
     """Find the closest color in the STAC chart to the given RGB color."""
-    closest_color, min_distance = min(stac_chart.items(), key=lambda item: color_distance(rgb, item[1]))
-    return closest_color, stac_chart[closest_color]
+    try:
+        closest_color, min_distance = min(
+            stac_chart.items(),
+            key=lambda item: color_distance(rgb, item[1])  # Corrected distance calculation
+        )
+        return closest_color, stac_chart[closest_color]
+    except Exception as e:
+        print(f"Error in find_closest_color: {e}")
+        return None, None
+
+
 
 class ImageCanvas(tk.Canvas):
     def __init__(self, master, app, **kwargs):
@@ -179,15 +210,19 @@ class ColorSamplerApp(tk.Tk):
 
     def quantize_to_stac(self):
         """Quantize the sampled colors to the closest STAC Chart colors."""
-        quantized_colors = [
-            (21, 21, 21) if color == (0, 0, 0) else
-            (252, 252, 252) if color == (255, 255, 255) else
-            find_closest_color(color, self.stac_chart)[1]
-            for color in self.colors
-        ]
+        quantized_colors = []
+        for color in self.colors:
+            if color == (0, 0, 0):  # Black
+                quantized_colors.append((19, 19, 19))  # Predefined Black
+            elif color == (255, 255, 255):  # White
+                quantized_colors.append((240, 240, 240))  # Predefined White
+            else:
+                closest_color = find_closest_color(color, self.stac_chart)[1]
+                quantized_colors.append(closest_color)
         self.colors = deque(quantized_colors, maxlen=1024)
         self.update_visualization()
         self.update_average_color()
+
 
     def create_widgets(self):
         """Create and arrange widgets in the app."""
